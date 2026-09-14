@@ -6,6 +6,7 @@ import { connectDB } from "./config/db";
 import { ENV } from "./config/env";
 import { corsMiddleware } from "./middleware/cors";
 import { loggerMiddleware } from "./middleware/logger";
+import { errorHandlerMiddleware } from "./middleware/errorHandler";
 
 // Routes
 import { certificatesRouter } from "./routes/certificates";
@@ -22,6 +23,7 @@ const app = new Hono();
 app.use("*", loggerMiddleware);
 app.use("*", corsMiddleware);
 app.use("*", secureHeaders());
+app.use("*", errorHandlerMiddleware);
 
 // ── Health check ──────────────────────────────────────────────────────────
 app.get("/", (c) =>
@@ -30,7 +32,7 @@ app.get("/", (c) =>
     version: "1.0.0",
     status: "running",
     timestamp: new Date().toISOString(),
-  })
+  }),
 );
 
 app.get("/health", (c) => c.json({ status: "ok" }));
@@ -45,7 +47,9 @@ app.route("/api/recommendation-letters", recommendationLettersRouter);
 app.route("/api/contact", contactRouter);
 
 // ── 404 handler ────────────────────────────────────────────────────────────
-app.notFound((c) => c.json({ success: false, message: "Route not found" }, 404));
+app.notFound((c) =>
+  c.json({ success: false, message: "Route not found" }, 404),
+);
 
 // ── Error handler ──────────────────────────────────────────────────────────
 app.onError((err, c) => {

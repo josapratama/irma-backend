@@ -20,6 +20,6 @@ export function errorResponse(
 ) {
   return c.json(
     { success: false, message, ...(errors ? { errors } : {}) },
-    status as 400 | 401 | 403 | 404 | 409 | 422 | 500,
+    status as 400 | 401 | 403 | 404 | 409 | 422 | 429 | 500,
   );
 }

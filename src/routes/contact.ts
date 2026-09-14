@@ -1,6 +1,7 @@
 import { Contact } from "../models/Contact";
 import { createRouter } from "../config/hono.types";
 import { authMiddleware } from "../middleware/auth";
+import { contactRateLimit } from "../middleware/rateLimit";
 import { validate } from "../utils/validate";
 import { successResponse, errorResponse } from "../utils/response";
 import { sendContactEmail } from "../utils/mailer";
@@ -13,8 +14,8 @@ export const contactRouter = createRouter();
 
 // ── Public ─────────────────────────────────────────────────────────────────
 
-// POST /api/contact — kirim pesan
-contactRouter.post("/", async (c) => {
+// POST /api/contact — kirim pesan (rate limited: 5 per IP per 15 menit)
+contactRouter.post("/", contactRateLimit, async (c) => {
   const body = await validate(c, createContactSchema);
   if (!body) return;
 
@@ -111,14 +112,8 @@ contactRouter.patch("/:id/status", authMiddleware, async (c) => {
   return successResponse(c, contact, "Status updated");
 });
 
-// DELETE /api/contact/:id
-contactRouter.delete("/:id", authMiddleware, async (c) => {
-  const contact = await Contact.findByIdAndDelete(c.req.param("id"));
-  if (!contact) return errorResponse(c, "Message not found", 404);
-  return successResponse(c, null, "Message deleted");
-});
-
 // DELETE /api/contact/bulk — hapus banyak sekaligus
+// ⚠️ HARUS sebelum /:id agar Hono tidak salah match "bulk" sebagai ID
 contactRouter.delete("/bulk", authMiddleware, async (c) => {
   const { ids } = (await c.req.json()) as { ids: string[] };
   if (!Array.isArray(ids) || ids.length === 0)
@@ -130,4 +125,11 @@ contactRouter.delete("/bulk", authMiddleware, async (c) => {
     { deleted: result.deletedCount },
     "Messages deleted",
   );
+});
+
+// DELETE /api/contact/:id
+contactRouter.delete("/:id", authMiddleware, async (c) => {
+  const contact = await Contact.findByIdAndDelete(c.req.param("id"));
+  if (!contact) return errorResponse(c, "Message not found", 404);
+  return successResponse(c, null, "Message deleted");
 });
