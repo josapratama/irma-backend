@@ -22,19 +22,20 @@ certificatesRouter.get("/", async (c) => {
   return successResponse(c, data);
 });
 
+// ── Admin (protected) ──────────────────────────────────────────────────────
+
+// GET /api/certificates/admin/all — semua termasuk hidden
+// ⚠️ HARUS sebelum /:id agar "admin" tidak dianggap sebagai :id parameter
+certificatesRouter.get("/admin/all", authMiddleware, async (c) => {
+  const data = await Certificate.find().sort({ order: 1, createdAt: 1 });
+  return successResponse(c, data);
+});
+
 // GET /api/certificates/:id
 certificatesRouter.get("/:id", async (c) => {
   const cert = await Certificate.findById(c.req.param("id"));
   if (!cert) return errorResponse(c, "Certificate not found", 404);
   return successResponse(c, cert);
-});
-
-// ── Admin (protected) ──────────────────────────────────────────────────────
-
-// GET /api/certificates/admin/all — semua termasuk hidden
-certificatesRouter.get("/admin/all", authMiddleware, async (c) => {
-  const data = await Certificate.find().sort({ order: 1, createdAt: 1 });
-  return successResponse(c, data);
 });
 
 // POST /api/certificates

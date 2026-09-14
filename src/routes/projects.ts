@@ -21,19 +21,20 @@ projectsRouter.get("/", async (c) => {
   return successResponse(c, data);
 });
 
+// ── Admin (protected) ──────────────────────────────────────────────────────
+
+// GET /api/projects/admin/all
+// ⚠️ HARUS sebelum /:id
+projectsRouter.get("/admin/all", authMiddleware, async (c) => {
+  const data = await Project.find().sort({ order: 1, createdAt: 1 });
+  return successResponse(c, data);
+});
+
 // GET /api/projects/:id
 projectsRouter.get("/:id", async (c) => {
   const project = await Project.findById(c.req.param("id"));
   if (!project) return errorResponse(c, "Project not found", 404);
   return successResponse(c, project);
-});
-
-// ── Admin (protected) ──────────────────────────────────────────────────────
-
-// GET /api/projects/admin/all
-projectsRouter.get("/admin/all", authMiddleware, async (c) => {
-  const data = await Project.find().sort({ order: 1, createdAt: 1 });
-  return successResponse(c, data);
 });
 
 // POST /api/projects

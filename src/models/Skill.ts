@@ -6,7 +6,7 @@ interface ISkillItem {
 }
 
 export interface ISkillGroup extends Document {
-  category: "hard" | "soft";
+  category: "hard" | "soft" | "language";
   label: { id: string; en: string };
   items: ISkillItem[];
   order: number;
@@ -20,12 +20,16 @@ const SkillItemSchema = new Schema<ISkillItem>(
     name: { type: String, required: true, trim: true },
     level: { type: Number, required: true, min: 0, max: 100 },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const SkillGroupSchema = new Schema<ISkillGroup>(
   {
-    category: { type: String, required: true, enum: ["hard", "soft"] },
+    category: {
+      type: String,
+      required: true,
+      enum: ["hard", "soft", "language"],
+    },
     label: {
       id: { type: String, required: true },
       en: { type: String, required: true },
@@ -34,9 +38,12 @@ const SkillGroupSchema = new Schema<ISkillGroup>(
     order: { type: Number, default: 0 },
     isVisible: { type: Boolean, default: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 SkillGroupSchema.index({ category: 1, order: 1 });
 
-export const SkillGroup = mongoose.model<ISkillGroup>("SkillGroup", SkillGroupSchema);
+export const SkillGroup = mongoose.model<ISkillGroup>(
+  "SkillGroup",
+  SkillGroupSchema,
+);

@@ -22,19 +22,20 @@ experiencesRouter.get("/", async (c) => {
   return successResponse(c, data);
 });
 
+// ── Admin (protected) ──────────────────────────────────────────────────────
+
+// GET /api/experiences/admin/all
+// ⚠️ HARUS sebelum /:id
+experiencesRouter.get("/admin/all", authMiddleware, async (c) => {
+  const data = await Experience.find().sort({ order: 1, createdAt: 1 });
+  return successResponse(c, data);
+});
+
 // GET /api/experiences/:id
 experiencesRouter.get("/:id", async (c) => {
   const exp = await Experience.findById(c.req.param("id"));
   if (!exp) return errorResponse(c, "Experience not found", 404);
   return successResponse(c, exp);
-});
-
-// ── Admin (protected) ──────────────────────────────────────────────────────
-
-// GET /api/experiences/admin/all
-experiencesRouter.get("/admin/all", authMiddleware, async (c) => {
-  const data = await Experience.find().sort({ order: 1, createdAt: 1 });
-  return successResponse(c, data);
 });
 
 // POST /api/experiences

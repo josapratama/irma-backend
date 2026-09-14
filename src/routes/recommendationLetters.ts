@@ -20,19 +20,20 @@ recommendationLettersRouter.get("/", async (c) => {
   return successResponse(c, data);
 });
 
+// ── Admin (protected) ──────────────────────────────────────────────────────
+
+// GET /api/recommendation-letters/admin/all
+// ⚠️ HARUS sebelum /:id
+recommendationLettersRouter.get("/admin/all", authMiddleware, async (c) => {
+  const data = await RecommendationLetter.find().sort({ order: 1 });
+  return successResponse(c, data);
+});
+
 // GET /api/recommendation-letters/:id
 recommendationLettersRouter.get("/:id", async (c) => {
   const letter = await RecommendationLetter.findById(c.req.param("id"));
   if (!letter) return errorResponse(c, "Recommendation letter not found", 404);
   return successResponse(c, letter);
-});
-
-// ── Admin (protected) ──────────────────────────────────────────────────────
-
-// GET /api/recommendation-letters/admin/all
-recommendationLettersRouter.get("/admin/all", authMiddleware, async (c) => {
-  const data = await RecommendationLetter.find().sort({ order: 1 });
-  return successResponse(c, data);
 });
 
 // POST /api/recommendation-letters

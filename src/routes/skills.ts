@@ -18,10 +18,19 @@ export const skillsRouter = createRouter();
 skillsRouter.get("/", async (c) => {
   const { category } = c.req.query();
   const filter: Record<string, unknown> = { isVisible: true };
-  if (category && ["hard", "soft"].includes(category))
+  if (category && ["hard", "soft", "language"].includes(category))
     filter.category = category;
 
   const data = await SkillGroup.find(filter).sort({ order: 1 });
+  return successResponse(c, data);
+});
+
+// ── Admin (protected) ──────────────────────────────────────────────────────
+
+// GET /api/skills/admin/all
+// ⚠️ HARUS sebelum /:id
+skillsRouter.get("/admin/all", authMiddleware, async (c) => {
+  const data = await SkillGroup.find().sort({ order: 1 });
   return successResponse(c, data);
 });
 
@@ -30,14 +39,6 @@ skillsRouter.get("/:id", async (c) => {
   const group = await SkillGroup.findById(c.req.param("id"));
   if (!group) return errorResponse(c, "Skill group not found", 404);
   return successResponse(c, group);
-});
-
-// ── Admin (protected) ──────────────────────────────────────────────────────
-
-// GET /api/skills/admin/all
-skillsRouter.get("/admin/all", authMiddleware, async (c) => {
-  const data = await SkillGroup.find().sort({ order: 1 });
-  return successResponse(c, data);
 });
 
 // POST /api/skills — buat skill group baru

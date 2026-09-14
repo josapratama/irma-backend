@@ -51,9 +51,9 @@ app.notFound((c) =>
   c.json({ success: false, message: "Route not found" }, 404),
 );
 
-// ── Error handler ──────────────────────────────────────────────────────────
+// ── Error handler (fallback untuk error yang lolos dari errorHandlerMiddleware) ──
 app.onError((err, c) => {
-  console.error("Unhandled error:", err);
+  console.error("Unhandled error (app.onError):", err);
   return c.json({ success: false, message: "Internal server error" }, 500);
 });
 

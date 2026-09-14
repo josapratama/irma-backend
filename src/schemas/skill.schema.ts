@@ -6,7 +6,7 @@ export const skillItemSchema = z.object({
 });
 
 export const createSkillGroupSchema = z.object({
-  category: z.enum(["hard", "soft"]),
+  category: z.enum(["hard", "soft", "language"]),
   label: z.object({
     id: z.string().min(1),
     en: z.string().min(1),
