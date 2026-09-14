@@ -32,9 +32,8 @@ fi
 # ── 2. Install dependencies ───────────────────────────────
 echo "📦 [2/5] Install dependencies & build..."
 cd "$APP_DIR/backend"
-npm install          # install semua termasuk devDeps untuk build
+npm install          # install semua — JANGAN prune, mongoose butuh semua module
 npm run build        # compile TypeScript
-npm prune --omit=dev # hapus devDeps setelah build selesai
 
 # ── 3. Buat .env jika belum ada ───────────────────────────
 echo "⚙️  [3/5] Setup .env..."
