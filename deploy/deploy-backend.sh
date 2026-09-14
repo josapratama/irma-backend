@@ -8,7 +8,7 @@
 set -e
 
 APP_DIR="/var/www/irma-backend"
-REPO_URL="https://github.com/josapratama/irma-iryani.git"
+REPO_URL="https://github.com/josapratama/irma-backend.git"
 SUBDOMAIN="irma.josapratama.cloud"
 
 echo ""
