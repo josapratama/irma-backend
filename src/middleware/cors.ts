@@ -14,8 +14,14 @@ export const corsMiddleware = cors({
     if (allowedOrigins.some((ao) => ao === cleanOrigin)) {
       return incomingOrigin;
     }
-    // Fallback: return incoming if matching wildcard or localhost
-    if (cleanOrigin.includes("localhost") || cleanOrigin.includes("127.0.0.1")) {
+    // Fallback: return incoming if matching localhost or domain
+    if (
+      cleanOrigin.includes("localhost") ||
+      cleanOrigin.includes("127.0.0.1") ||
+      cleanOrigin.endsWith(".josapratama.com") ||
+      cleanOrigin.endsWith(".josapratama.cloud") ||
+      cleanOrigin === "https://josapratama.com"
+    ) {
       return incomingOrigin;
     }
     return allowedOrigins[0] || "*";
