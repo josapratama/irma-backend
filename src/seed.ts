@@ -555,18 +555,26 @@ async function seed() {
   console.log(`✅ ${experiencesData.length} Pengalaman berhasil disimpan`);
 
   // Buat default admin jika belum ada
-  const adminEmail = (process.env.ADMIN_EMAIL || "admin@irmairyani.com").toLowerCase();
-  const existingAdmin = await Admin.findOne({ email: adminEmail });
-  if (!existingAdmin) {
-    const defaultPassword = process.env.ADMIN_PASSWORD || "Admin123!";
-    const passwordHash = await bcrypt.hash(defaultPassword, 12);
-    await Admin.create({
-      email: adminEmail,
-      passwordHash,
-    });
-    console.log(`👤 Admin default dibuat: ${adminEmail} (Password: ${defaultPassword})`);
-  } else {
-    console.log(`👤 Admin ${adminEmail} sudah terdaftar`);
+  const adminsToEnsure = [
+    {
+      email: (process.env.ADMIN_EMAIL || "admin@irmairyani.com").toLowerCase(),
+      password: process.env.ADMIN_PASSWORD || "Admin123!",
+    },
+    {
+      email: "admin@josapratama.com",
+      password: "IrmaAdmin2026!",
+    },
+  ];
+
+  for (const adm of adminsToEnsure) {
+    const existing = await Admin.findOne({ email: adm.email });
+    if (!existing) {
+      const passwordHash = await bcrypt.hash(adm.password, 12);
+      await Admin.create({ email: adm.email, passwordHash });
+      console.log(`👤 Admin dibuat: ${adm.email} (Password: ${adm.password})`);
+    } else {
+      console.log(`👤 Admin ${adm.email} sudah terdaftar`);
+    }
   }
 
   console.log("\n🎉 SEMUA DATA SEEDER BERHASIL DISIMPAN!");
