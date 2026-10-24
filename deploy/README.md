@@ -1,8 +1,8 @@
-# Deploy Guide — irma.josapratama.cloud
+# Deploy Guide — irma.josapratama.com
 
 ## Status
 
-✅ **Backend live:** https://irma.josapratama.cloud  
+✅ **Backend live:** https://irma.josapratama.com  
 ✅ **SSL:** Let's Encrypt (auto-renew)  
 ✅ **MongoDB:** local di VPS  
 ✅ **PM2:** auto-start on reboot
@@ -13,7 +13,7 @@
 
 - IP: 202.155.13.117
 - OS: Ubuntu 24.04
-- Subdomain: irma.josapratama.cloud
+- Subdomain: irma.josapratama.com
 
 ---
 
@@ -118,7 +118,7 @@ pm2 save
 cat > /etc/nginx/sites-available/irma-backend << 'NGEOF'
 server {
     listen 80;
-    server_name irma.josapratama.cloud;
+    server_name irma.josapratama.com;
     location / {
         proxy_pass http://127.0.0.1:3001;
         proxy_set_header Host $host;
@@ -131,7 +131,7 @@ ln -sf /etc/nginx/sites-available/irma-backend /etc/nginx/sites-enabled/
 nginx -t && systemctl reload nginx
 
 # SSL
-certbot --nginx -d irma.josapratama.cloud --email josapratama1234@gmail.com --agree-tos --non-interactive --redirect
+certbot --nginx -d irma.josapratama.com --email josapratama1234@gmail.com --agree-tos --non-interactive --redirect
 
 # Firewall
 ufw --force enable && ufw allow ssh && ufw allow 80/tcp && ufw allow 443/tcp
@@ -140,7 +140,7 @@ ufw --force enable && ufw allow ssh && ufw allow 80/tcp && ufw allow 443/tcp
 ### 7. Setup admin (sekali saja)
 
 ```bash
-curl -X POST https://irma.josapratama.cloud/api/auth/setup \
+curl -X POST https://irma.josapratama.com/api/auth/setup \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@josapratama.cloud","password":"IrmaAdmin2026!"}'
 ```
@@ -154,7 +154,7 @@ pm2 list                 # Status proses
 pm2 logs irma-backend    # Lihat logs realtime
 systemctl status mongod  # Status MongoDB
 systemctl status nginx   # Status Nginx
-curl https://irma.josapratama.cloud/health  # Test API
+curl https://irma.josapratama.com/health  # Test API
 ```
 
 ---

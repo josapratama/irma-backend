@@ -20,4 +20,4 @@ pm2 restart irma-backend
 pm2 list
 
 echo "✅ Backend updated!"
-echo "   curl https://irma.josapratama.cloud/health"
+echo "   curl https://irma.josapratama.com/health"

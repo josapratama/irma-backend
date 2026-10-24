@@ -1,12 +1,12 @@
 #!/bin/bash
 # ============================================================
-# Setup Nginx + SSL untuk irma.josapratama.cloud
+# Setup Nginx + SSL untuk irma.josapratama.com
 # Jalankan setelah deploy-backend.sh
 # ============================================================
 
 set -e
 
-SUBDOMAIN="irma.josapratama.cloud"
+SUBDOMAIN="irma.josapratama.com"
 EMAIL="josapratama@gmail.com"  # Ganti jika perlu
 
 echo ""

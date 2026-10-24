@@ -1,6 +1,6 @@
 import urllib.request, json
 
-BASE = "https://irma.josapratama.cloud"
+BASE = "https://irma.josapratama.com"
 
 def test(path, method="GET", data=None, headers=None):
     h = {"Content-Type": "application/json"}

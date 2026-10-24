@@ -215,7 +215,7 @@ def main():
         'cat > /etc/nginx/sites-available/irma-backend << \'NGEOF\'\n'
         'server {\n'
         '    listen 80;\n'
-        '    server_name irma.josapratama.cloud;\n'
+        '    server_name irma.josapratama.com;\n'
         '\n'
         '    add_header X-Frame-Options "SAMEORIGIN" always;\n'
         '    add_header X-Content-Type-Options "nosniff" always;\n'
@@ -241,7 +241,7 @@ def main():
     run_command(client, "ln -sf /etc/nginx/sites-available/irma-backend /etc/nginx/sites-enabled/", timeout=10)
     run_command(client, "rm -f /etc/nginx/sites-enabled/default 2>/dev/null || true", timeout=10, ignore_error=True)
     run_command(client, "nginx -t && systemctl reload nginx", timeout=30)
-    print("  ✅ Nginx dikonfigurasi untuk irma.josapratama.cloud")
+    print("  ✅ Nginx dikonfigurasi untuk irma.josapratama.com")
 
     # ── Summary ───────────────────────────────────────────────
     print("\n" + "=" * 60)

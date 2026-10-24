@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# VPS Setup Script untuk irma.josapratama.cloud
+# VPS Setup Script untuk irma.josapratama.com
 # Ubuntu 24.04 — Node.js + MongoDB + PM2 + Nginx
 # Jalankan sebagai root: bash setup-vps.sh
 # ============================================================
@@ -9,7 +9,7 @@ set -e  # Keluar jika ada error
 
 echo ""
 echo "=================================================="
-echo "  🚀 Setup VPS irma.josapratama.cloud"
+echo "  🚀 Setup VPS irma.josapratama.com"
 echo "=================================================="
 echo ""
 
