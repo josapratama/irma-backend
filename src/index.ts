@@ -16,6 +16,8 @@ import { skillsRouter } from "./routes/skills";
 import { recommendationLettersRouter } from "./routes/recommendationLetters";
 import { authRouter } from "./routes/auth";
 import { contactRouter } from "./routes/contact";
+import { profileRouter } from "./routes/profile";
+import { educationsRouter } from "./routes/educations";
 
 const app = new Hono();
 
@@ -39,6 +41,8 @@ app.get("/health", (c) => c.json({ status: "ok" }));
 
 // ── Routes ─────────────────────────────────────────────────────────────────
 app.route("/api/auth", authRouter);
+app.route("/api/profile", profileRouter);
+app.route("/api/educations", educationsRouter);
 app.route("/api/certificates", certificatesRouter);
 app.route("/api/projects", projectsRouter);
 app.route("/api/experiences", experiencesRouter);
